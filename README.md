@@ -8,5 +8,6 @@ How to run
 
 then
 
-`docker run -p 3000:3000 -d my-nodejs-app` (you can change my-nodejs-app to whatever you want)
+`ddocker run -p 3000:3000 -v /path/to/your/numbersJsonFileYouAreUsing:/usr/src/app/data -d my-nodejs-app
+` (you can change my-nodejs-app to whatever you want)
 
