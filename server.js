@@ -11,13 +11,18 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Define the route for '/Auditor/Mfg-Homes-Counter/'
+app.get('/Auditor/Mfg-Homes-Counter/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 const port = process.argv[2] || 3000; // If no argument is provided, the port will default to 3000.
 
 // Check if /usr/src/app/data/numbers.json exists, if it does, use that path, otherwise, fall back to 'numbers.json'
 const numbersPath = fs.existsSync('/usr/src/app/data/numbers.json') ? '/usr/src/app/data/numbers.json' : 'numbers.json';
 
-// When '/next-number' is accessed, read the JSON file, parse it and send the next number
-app.get('/next-number', (req, res) => {
+// Update the route for '/next-number' to '/Auditor/Mfg-Homes-Counter/next-number'
+app.get('/Auditor/Mfg-Homes-Counter/next-number', (req, res) => {
   fs.readFile(numbersPath, (err, data) => {
     if (err) {
       console.error(err);
@@ -29,8 +34,8 @@ app.get('/next-number', (req, res) => {
   });
 });
 
-// When '/add-number' is accessed, read the JSON file, add the next number, then write the updated data back to the file
-app.post('/add-number', (req, res) => {
+// Update the route for '/add-number' to '/Auditor/Mfg-Homes-Counter/add-number'
+app.post('/Auditor/Mfg-Homes-Counter/add-number', (req, res) => {
   fs.readFile(numbersPath, (err, data) => {
     if (err) {
       console.error(err);
