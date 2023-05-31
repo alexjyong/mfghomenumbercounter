@@ -3,15 +3,20 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
+// Allow the app to use JSON
 app.use(express.json());
-// app.use(express.static('public'));  // commenting out this line for now
 
+// Serve the index.html file when root ('/') is accessed
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Check if /usr/src/app/data/numbers.json exists, if it does, use that path, otherwise, fall back to 'numbers.json'
+const numbersPath = fs.existsSync('/usr/src/app/data/numbers.json') ? '/usr/src/app/data/numbers.json' : 'numbers.json';
+
+// When '/next-number' is accessed, read the JSON file, parse it and send the next number
 app.get('/next-number', (req, res) => {
-  fs.readFile('numbers.json', (err, data) => {
+  fs.readFile(numbersPath, (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Server Error');
@@ -22,8 +27,9 @@ app.get('/next-number', (req, res) => {
   });
 });
 
+// When '/add-number' is accessed, read the JSON file, add the next number, then write the updated data back to the file
 app.post('/add-number', (req, res) => {
-  fs.readFile('numbers.json', (err, data) => {
+  fs.readFile(numbersPath, (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Server Error');
@@ -32,15 +38,16 @@ app.post('/add-number', (req, res) => {
     const nextNumber = Math.max(...numbers) + 1;
     numbers.push(nextNumber);
 
-    fs.writeFile('numbers.json', JSON.stringify(numbers), err => {
+    fs.writeFile(numbersPath, JSON.stringify(numbers), err => {
       if (err) {
         console.error(err);
         return res.status(500).send('Server Error');
       }
+      // Send the next number that will be added next time
       res.send({ nextNumber: nextNumber + 1 });
     });
   });
 });
 
+// Start the server on port 3000
 app.listen(3000, () => console.log('Server running on port 3000'));
-
