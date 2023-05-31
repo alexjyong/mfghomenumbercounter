@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Number Generator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="p-5">
+    <div class="container">
+      <h1 class="mb-5">Next Available Mfg Homes Number: <span id="number"></span></h1>
+      <button id="addButton" class="btn btn-primary">Add number</button>
+      <p id="error" class="mt-3 text-danger"></p>
+    </div>
+
+    <script>
+      const numberElement = document.getElementById('number');
+      const addButton = document.getElementById('addButton');
+      const errorElement = document.getElementById('error');
+
+      function getNextNumber() {
+        fetch('/next-number')
+          .then(res => {
+            if (!res.ok) throw new Error(res.statusText);
+            return res.json();
+          })
+          .then(data => {
+            numberElement.textContent = data.nextNumber;
+          })
+          .catch(error => {
+            errorElement.textContent = 'Failed to fetch the next number: ' + error;
+          });
+      }
+
+      function addNumber() {
+        addButton.disabled = true;
+        fetch('/add-number', { method: 'POST' })
+          .then(res => {
+            if (!res.ok) throw new Error(res.statusText);
+            return res.json();
+          })
+          .then(data => {
+            numberElement.textContent = data.nextNumber;
+            errorElement.textContent = '';
+          })
+          .catch(error => {
+            errorElement.textContent = 'Failed to add the next number: ' + error;
+          })
+          .finally(() => {
+            addButton.disabled = false;
+          });
+      }
+
+      addButton.addEventListener('click', addNumber);
+      getNextNumber();
+    </script>
+  </body>
+</html>
+
