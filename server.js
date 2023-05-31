@@ -11,6 +11,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+const port = process.argv[2] || 3000; // If no argument is provided, the port will default to 3000.
+
 // Check if /usr/src/app/data/numbers.json exists, if it does, use that path, otherwise, fall back to 'numbers.json'
 const numbersPath = fs.existsSync('/usr/src/app/data/numbers.json') ? '/usr/src/app/data/numbers.json' : 'numbers.json';
 
@@ -49,5 +51,4 @@ app.post('/add-number', (req, res) => {
   });
 });
 
-// Start the server on port 81
-app.listen(81, () => console.log('Server running on port 81'));
+app.listen(port, () => console.log(`Server running on port ${port}`));
