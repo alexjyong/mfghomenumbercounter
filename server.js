@@ -6,12 +6,12 @@ const app = express();
 // Allow the app to use JSON
 app.use(express.json());
 
-// Redirect the root path ('/') to '/Auditor/Mfg-Homes-Counter/'
+// Serve the index.html file when root ('/') is accessed
 app.get('/', (req, res) => {
-  res.redirect('/Auditor/Mfg-Homes-Counter/');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve the index.html file when '/Auditor/Mfg-Homes-Counter/' is accessed
+// Define the route for '/Auditor/Mfg-Homes-Counter/'
 app.get('/Auditor/Mfg-Homes-Counter/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
