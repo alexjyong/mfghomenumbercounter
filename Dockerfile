@@ -13,9 +13,11 @@ RUN npm install
 # Copy the server code into the working directory
 COPY . .
 
+# Create a Docker volume
+VOLUME /usr/src/app/data
+
 # Make port 3000 available outside of the container
 EXPOSE 3000
 
 # Run the application when the container launches
 CMD [ "node", "server.js" ]
-
